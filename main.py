@@ -2,7 +2,6 @@ import os
 import cv2
 import face_recognition
 
-
 known_face_encodings = []  # Lista com os encodings dos rostos conhecidos
 known_face_names = []  # Lista com os nomes dos rostos conhecidos
 
@@ -21,12 +20,10 @@ def load_images():
 # Função principal
 def init():
     load_images()  # Carregar as imagens de pessoas conhecidas
-
     video_capture = cv2.VideoCapture(2) # Inicializar a câmera
 
     while True:
         ret, frame = video_capture.read() # Capturar cada frame da câmera
-
         frame = cv2.flip(frame, 1)  # Espelhar o frame horizontalmente
 
         # Encontrar rostos no frame
@@ -35,10 +32,8 @@ def init():
 
         # Loop sobre cada rosto encontrado no frame
         for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
-
             # Verificar se o rosto é um rosto conhecido
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-
             name = "Desconhecido"  # Se não for um rosto conhecido, então o nome será "Desconhecido"
 
             # Se um rosto conhecido for encontrado, use o primeiro
@@ -52,8 +47,7 @@ def init():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 0.5, (255, 255, 255), 1)
 
-        # Exibir o resultado
-        cv2.imshow('Video', frame)
+        cv2.imshow('Video', frame)  # Exibir o frame com o retângulo e o nome
 
         # Se pressionar 'q', sair do loop
         if cv2.waitKey(1) & 0xFF == ord('q'):
